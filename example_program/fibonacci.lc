@@ -30,9 +30,8 @@ SECOND := λp.p F;
 
 FIBSTEP := λp.(PAIR (PLUS (FIRST p) (SECOND p)) (FIRST p));
 
-FIB := λn.FIRST (n FIBSTEP (PAIR 1 0));
+FIB := λn.FIRST (n FIBSTEP (PAIR 0 1));
 
-println FIB 0;
 println FIB 1;
 println FIB 2;
 println FIB 3;
