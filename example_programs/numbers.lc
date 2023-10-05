@@ -4,7 +4,7 @@
 */
 
 SUCC := λn.λf.λx.f (n f x);             // The successor function
-0 := λf.λx.x;                           // Encoding of the natural number zero
+0 := λf.λx.x;                           // Encoding of the natural number Zero
 
 1 := SUCC 0;
 2 := SUCC 1;

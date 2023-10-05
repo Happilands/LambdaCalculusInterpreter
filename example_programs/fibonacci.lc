@@ -3,17 +3,7 @@
     By: Daan Phlips
 */
 
-SUCC := λn.λf.λx.f (n f x);             // The successor function
-0 := λf.λx.x;                           // Encoding of the natural number zero
-
-1 := SUCC 0;
-2 := SUCC 1;
-3 := SUCC 2;
-4 := SUCC 3;
-5 := SUCC 4;
-6 := SUCC 5;
-7 := SUCC 6;
-8 := SUCC 7;
+import "example_programs/numbers.lc";
 
 PLUS    := λm.λn.λf.λx.m f (n f x);     // Addition
 
@@ -35,3 +25,5 @@ println FIB 5;
 println FIB 6;
 println FIB 7;
 println FIB 8;
+println FIB 9;
+println FIB 10;

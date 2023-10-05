@@ -5,33 +5,32 @@ import interpreter.exception.SyntaxError;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TokenStack {
-    private final List<Token> tokens;
-    private int index = 0;
+    private final Queue<Token> tokens;
     private int currentLine = 1;
     private int currentChar = 0;
     private int lastNewLineChar = 0;
-    private final String code;
 
-    public TokenStack(String code){
-        tokens = new ArrayList<>();
-        this.code = code;
+    public TokenStack(String code) {
+        tokens = new ArrayDeque<>();
 
-        tokenize();
+        tokenize(code);
     }
 
-    public void print(){
+    public void print() {
         tokens.forEach(token -> System.out.println(token.getString()));
     }
 
-    private void updateLineCharacter(int toChar){
-        for(; currentChar < toChar; currentChar++) {
+    private void updateLineCharacter(String code, int toChar) {
+        for (; currentChar < toChar; currentChar++) {
             if (code.charAt(currentChar) == '\n') {
                 currentLine++;
                 lastNewLineChar = currentChar;
@@ -39,25 +38,24 @@ public class TokenStack {
         }
     }
 
-    public Token peek(){
-        if(hasEnded())
+    public Token peek() {
+        if (hasEnded())
             throw new EOFError();
 
-        return tokens.get(index);
+        return tokens.peek();
     }
 
-    public boolean hasEnded(){
-        return index >= tokens.size();
+    public boolean hasEnded() {
+        return tokens.isEmpty();
     }
 
     public Token expect(TokenType type) {
-        if(hasEnded())
+        if (hasEnded())
             throw new RuntimeException("Expected " + type.toString().toLowerCase() + " but reached end of file");
 
-        Token token = tokens.get(index);
-        index++;
+        Token token = tokens.poll();
 
-        if(token.getType() == type)
+        if (token.getType() == type)
             return token;
 
         throw new SyntaxError(
@@ -66,36 +64,40 @@ public class TokenStack {
         );
     }
 
-    private void tokenize(){
+    private void tokenize(String code) {
+        currentLine = 1;
+        currentChar = 0;
+        lastNewLineChar = 0;
+
         Matcher m = Pattern.compile("//.*|(?s)/\\*.*?\\*/|([λlL.;()]|:=|[a-zA-Z0-9_]+|\"[^\"]*\")|\\s")
                 .matcher(code);
 
         int lastEnd = 0;
 
         while (m.find()) {
-            if(m.start() != lastEnd){
-                updateLineCharacter(m.start());
+            if (m.start() != lastEnd) {
+                updateLineCharacter(code, m.start());
                 throw new SyntaxError("Unexpected character '" + code.charAt(lastEnd) + "'",
                         currentLine, m.start() - lastNewLineChar - 2);
             }
             lastEnd = m.end();
 
             // Strip whitespace
-            if(m.group().length() == 1 && m.group().trim().isEmpty()){
+            if (m.group().length() == 1 && m.group().trim().isEmpty()) {
                 continue;
             }
             // Strip comments
-            if(m.group().charAt(0) == '/')
+            if (m.group().charAt(0) == '/')
                 continue;
 
-            updateLineCharacter(m.start());
+            updateLineCharacter(code, m.start());
 
             int tokenLineNumber = currentLine;
             int tokenCharNumber = m.start() - lastNewLineChar - 1;
 
-            if(m.group().charAt(0) == '\"'){
+            if (m.group().charAt(0) == '\"') {
                 String s = m.group().substring(1, m.group().length() - 1);
-                tokens.add(new Token(s, tokenLineNumber, tokenCharNumber, TokenType.IDENTIFIER));
+                tokens.add(new Token(s, tokenLineNumber, tokenCharNumber, TokenType.STRING));
                 continue;
             }
 

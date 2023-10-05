@@ -14,11 +14,6 @@ public class Print extends Statement{
     private boolean newline;
 
     @Override
-    public void replace(Identifier identifier, Expression expression) {
-        body = body.substitute(identifier, expression);
-    }
-
-    @Override
     public void run(Program program) {
         body = body.evaluate();
 

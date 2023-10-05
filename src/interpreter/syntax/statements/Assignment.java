@@ -20,11 +20,6 @@ public class Assignment extends Statement{
         program.getDefinitionStack().assign(definition, body);
     }
 
-    @Override
-    public void replace(Identifier identifier, Expression expression) {
-        body = body.substitute(identifier, expression);
-    }
-
     public String getIdentifier(){
         return identifier;
     }

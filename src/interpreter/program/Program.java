@@ -1,25 +1,42 @@
 package interpreter.program;
 
 import interpreter.TokenStack;
-import interpreter.exception.SyntaxError;
-import interpreter.syntax.Token;
-import interpreter.syntax.TokenType;
-import interpreter.syntax.statements.Assignment;
-import interpreter.syntax.statements.Print;
 import interpreter.syntax.statements.Statement;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Program {
     private final List<Statement> statements;
     private final DefinitionStack definitionStack;
-    private final TokenStack tokenStack;
+    private final Stack<ProgramSegment> segments;
 
-    public Program(TokenStack tokenStack){
+    public Program(){
         statements = new ArrayList<>();
         definitionStack = new DefinitionStack();
-        this.tokenStack = tokenStack;
+        segments = new Stack<>();
+    }
+
+    public void addStatement(Statement statement){
+        statements.add(statement);
+    }
+
+    public void importFile(Path file){
+        String code = null;
+        try {
+            code = Files.readString(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        ProgramSegment segment = new ProgramSegment(code);
+        segments.push(segment);
+        segment.parse(this);
+        segments.pop();
     }
 
     public DefinitionStack getDefinitionStack(){
@@ -27,28 +44,7 @@ public class Program {
     }
 
     public TokenStack getTokenStack(){
-        return tokenStack;
-    }
-
-    public boolean parse() {
-        try {
-            while (!tokenStack.hasEnded()) {
-                Token next = tokenStack.peek();
-
-                if (next.getString().equals("print") || next.getString().equals("println")) {
-                    statements.add(Print.parsePrint(this));
-                } else if (next.getType() == TokenType.IDENTIFIER)
-                    statements.add(Assignment.parseAssignment(this));
-                else
-                    throw new SyntaxError("Unexpected token: '" + next.getString() + "'",
-                            next.getLine(), next.getCharacter());
-            }
-            return true;
-        }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
+        return segments.peek().getTokenStack();
     }
 
     public boolean evaluate(){

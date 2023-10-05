@@ -1,11 +1,25 @@
 package interpreter.syntax.statements;
 
+import interpreter.exception.SyntaxError;
 import interpreter.program.Program;
-import interpreter.syntax.expressions.Expression;
-import interpreter.syntax.expressions.Identifier;
+import interpreter.syntax.Token;
+import interpreter.syntax.TokenType;
 
 public abstract class Statement {
     public abstract void run(Program program);
 
-    public abstract void replace(Identifier identifier, Expression expression);
+    public static Statement parseStatement(Program program) {
+        Token next = program.getTokenStack().peek();
+
+        if (next.getString().equals("print") || next.getString().equals("println"))
+            return Print.parsePrint(program);
+        else if(next.getString().equals("import"))
+            return Import.parseImport(program);
+        else if (next.getType() == TokenType.IDENTIFIER)
+            return Assignment.parseAssignment(program);
+
+
+        throw new SyntaxError("Unexpected token: '" + next.getString() + "'",
+                next.getLine(), next.getCharacter());
+    }
 }

@@ -3,6 +3,7 @@ package interpreter.syntax;
 public enum TokenType {
     ASSIGNMENT,
     IDENTIFIER,
+    STRING,
     LAMBDA,
     DOT,
     OPEN_BRACKET,
@@ -12,6 +13,7 @@ public enum TokenType {
     public String getRepresentation(){
         return switch (this){
             case ASSIGNMENT -> ":=";
+            case STRING -> "string";
             case IDENTIFIER -> "identifier";
             case LAMBDA -> "λ";
             case DOT -> ".";
