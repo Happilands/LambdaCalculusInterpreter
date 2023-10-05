@@ -1,5 +1,6 @@
 package interpreter.syntax.statements;
 
+import interpreter.exception.SyntaxError;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
@@ -33,11 +34,12 @@ public class Print extends Statement{
         // Expect print keyword
         Token keyword = program.getTokenStack().expect(TokenType.IDENTIFIER);
 
-        if(!keyword.getName().equals("print") && !keyword.getName().equals("println"))
-            throw new RuntimeException("Expected print keyword!");
+        if(!keyword.getString().equals("print") && !keyword.getString().equals("println"))
+            throw new SyntaxError(String.format("Expected print keyword, found '%s'", keyword.getString()),
+                    keyword.getLine(), keyword.getCharacter());
 
         print.body = Sequence.parseSemicolon(program);
-        print.newline = keyword.getName().equals("println");
+        print.newline = keyword.getString().equals("println");
 
         // Expect semicolon
         program.getTokenStack().expect(TokenType.TERMINATOR);

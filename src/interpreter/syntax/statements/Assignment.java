@@ -36,7 +36,7 @@ public class Assignment extends Statement{
     public static Assignment parseAssignment(Program program) {
         Assignment assignment = new Assignment();
 
-        assignment.identifier = program.getTokenStack().expect(TokenType.IDENTIFIER).getName();
+        assignment.identifier = program.getTokenStack().expect(TokenType.IDENTIFIER).getString();
         program.getTokenStack().expect(TokenType.ASSIGNMENT);
 
         assignment.body = Sequence.parseSemicolon(program);

@@ -1,6 +1,7 @@
 package interpreter.program;
 
-import interpreter.syntax.expressions.Expression;
+import interpreter.exception.SyntaxError;
+import interpreter.syntax.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,14 @@ public class DefinitionStack {
         definitions.remove(definitions.size() - 1);
     }
 
-    public Definition find(String identifier){
+    public Definition find(Token identifier){
         for (int i = definitions.size() - 1; i >= 0; i--) {
             Definition definition = definitions.get(i);
 
-            if(identifier.equals(definition.getIdentifier()))
+            if(identifier.getString().equals(definition.getIdentifier()))
                 return definition;
         }
-        throw new RuntimeException("found undefined identifier: '" + identifier + "'");
+        throw new SyntaxError("Found undefined identifier: '" + identifier.getString() + "'",
+                identifier.getLine(), identifier.getCharacter());
     }
 }

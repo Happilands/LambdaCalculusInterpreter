@@ -1,6 +1,7 @@
 package interpreter.program;
 
 import interpreter.TokenStack;
+import interpreter.exception.SyntaxError;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
 import interpreter.syntax.statements.Assignment;
@@ -29,17 +30,24 @@ public class Program {
         return tokenStack;
     }
 
-    public void parse() {
-        while (!tokenStack.hasEnded()){
-            Token next = tokenStack.peek();
+    public boolean parse() {
+        try {
+            while (!tokenStack.hasEnded()) {
+                Token next = tokenStack.peek();
 
-            if(next.getName().equals("print") || next.getName().equals("println")){
-                statements.add(Print.parsePrint(this));
+                if (next.getString().equals("print") || next.getString().equals("println")) {
+                    statements.add(Print.parsePrint(this));
+                } else if (next.getType() == TokenType.IDENTIFIER)
+                    statements.add(Assignment.parseAssignment(this));
+                else
+                    throw new SyntaxError("Unexpected token: '" + next.getString() + "'",
+                            next.getLine(), next.getCharacter());
             }
-            else if(next.getType() == TokenType.IDENTIFIER)
-                statements.add(Assignment.parseAssignment(this));
-            else
-                throw new RuntimeException("Not a valid start of a statement!");
+            return true;
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 

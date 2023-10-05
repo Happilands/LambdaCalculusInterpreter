@@ -1,10 +1,14 @@
 /*
+    Lambda Calculus Basic Concepts
     Author: Daan Phlips
 */
 
-SUCC := λn.λf.λx.f (n f x);
+I := (λx.x);                            // The identity function, does nothing
+EMPTY := (λx.);                         // The empty function, removes the subsequent term
 
-0 := λf.λx.x;
+SUCC := λn.λf.λx.f (n f x);             // The successor function
+0 := λf.λx.x;                           // Encoding of the natural number zero
+
 1 := SUCC 0;
 2 := SUCC 1;
 3 := SUCC 2;
@@ -14,22 +18,22 @@ SUCC := λn.λf.λx.f (n f x);
 7 := SUCC 6;
 8 := SUCC 7;
 
-PLUS := λm.λn.λf.λx.m f (n f x);
-MULT := λm.λn.λf.m (n f);
+PLUS    := λm.λn.λf.λx.m f (n f x);     // Addition
+MULT    := λm.λn.λf.m (n f);            // Multiplication
 
-T := Lx.Ly.x;
-F := Lx.Ly.y;
+T       := λx.λy.x;                     // Encoding of the boolean True
+F       := λx.λy.y;                     // Encoding of the boolean False
 
-NOT := (Lp.p F T);
-AND := Lb1.Lb2.b1 b2 b1;
-OR := Lb1.Lb2.b1 b1 b2;
+NOT     := (λp.p F T);                  // NOT function
+AND     := λb1.λb2.b1 b2 b1;            // AND function
+OR      := λb1.λb2.b1 b1 b2;            // OR  function
+XOR     := λb1.λb2.b1 (NOT b2) b2;      // XOR function
 
-PAIR := λx.λy.λf.f x y;
-FIRST := λp.p T;
-SECOND := λp.p F;
+PAIR    := λx.λy.λf.f x y;              // Creates a pairing of two elements
+FIRST   := λp.p T;                      // Retrieves the first element
+SECOND  := λp.p F;                      // Retrieves the second element
 
 FIBSTEP := λp.(PAIR (PLUS (FIRST p) (SECOND p)) (FIRST p));
-
 FIB := λn.FIRST (n FIBSTEP (PAIR 0 1));
 
 println FIB 1;

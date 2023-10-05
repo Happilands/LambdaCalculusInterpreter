@@ -18,8 +18,10 @@ public class Main {
         TokenStack tokenStack = new TokenStack(code);
 
         Program program = new Program(tokenStack);
-        program.parse();
 
-        program.evaluate();
+
+        if (program.parse()) {
+            program.evaluate();
+        }
     }
 }

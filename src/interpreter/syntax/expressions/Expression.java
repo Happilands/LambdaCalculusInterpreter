@@ -1,5 +1,6 @@
 package interpreter.syntax.expressions;
 
+import interpreter.exception.SyntaxError;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 
@@ -24,7 +25,8 @@ public abstract class Expression {
             case OPEN_BRACKET -> Sequence.parseBracket(program);
             case LAMBDA -> Lambda.parse(program);
             case IDENTIFIER -> Identifier.parse(program);
-            default -> throw new RuntimeException("Not a valid expression!");
+            default -> throw new SyntaxError(String.format("Invalid expression, found '%s'", first.getString()),
+                    first.getLine(), first.getCharacter());
         };
     }
 

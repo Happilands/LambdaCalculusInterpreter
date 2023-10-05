@@ -2,6 +2,7 @@ package interpreter.syntax.expressions;
 
 import interpreter.program.Definition;
 import interpreter.program.Program;
+import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
 
 public class Identifier extends Expression{
@@ -52,7 +53,7 @@ public class Identifier extends Expression{
     }
 
     public static Expression parse(Program program){
-        String identifier = program.getTokenStack().expect(TokenType.IDENTIFIER).getName();
+        Token identifier = program.getTokenStack().expect(TokenType.IDENTIFIER);
 
         Definition definition = program.getDefinitionStack().find(identifier);
 

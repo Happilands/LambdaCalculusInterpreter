@@ -63,8 +63,8 @@ public class Lambda extends Function{
         Token varName = program.getTokenStack().expect(TokenType.IDENTIFIER);
         Token dot = program.getTokenStack().expect(TokenType.DOT);
 
-        String idName = varName.getName();
-        Identifier identifier = new Identifier(varName.getName());
+        String idName = varName.getString();
+        Identifier identifier = new Identifier(varName.getString());
 
         // PUSH
         program.getDefinitionStack().push(new Definition(idName, identifier, DefinitionType.LAMBDA));
