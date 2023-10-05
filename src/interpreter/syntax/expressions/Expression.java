@@ -1,6 +1,7 @@
 package interpreter.syntax.expressions;
 
 import interpreter.exception.SyntaxError;
+import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 
@@ -15,7 +16,7 @@ public abstract class Expression {
 
     public abstract Expression substitute(Identifier identifier, Expression expression);
 
-    public abstract void buildString(StringBuilder builder);
+    public abstract void format(ExpressionFormatter formatter);
 
     public static Expression parse(Program program){
 
@@ -32,8 +33,8 @@ public abstract class Expression {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        buildString(builder);
-        return builder.toString();
+        ExpressionFormatter formatter = new ExpressionFormatter();
+        format(formatter);
+        return formatter.getBuilder().toString();
     }
 }

@@ -17,7 +17,7 @@ public class Assignment extends Statement{
     public void run(Program program) {
         body = body.evaluate();
 
-        definition.setExpression(body);
+        program.getDefinitionStack().assign(definition, body);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Assignment extends Statement{
         assignment.definition = new Definition(
                 assignment.identifier,
                 null,
-                DefinitionType.DEFINITION
+                DefinitionType.ASSIGNMENT
         );
 
         program.getDefinitionStack().push(assignment.definition);

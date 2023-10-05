@@ -51,9 +51,16 @@ public class Program {
         }
     }
 
-    public void evaluate(){
-        for(Statement statement : statements) {
-            statement.run(this);
+    public boolean evaluate(){
+        try {
+            for (Statement statement : statements) {
+                statement.run(this);
+            }
         }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package interpreter.syntax.expressions;
 
+import interpreter.program.ExpressionFormatter;
+
 public class Void extends Expression{
     public static Void instance = new Void();
 
@@ -29,7 +31,7 @@ public class Void extends Expression{
     }
 
     @Override
-    public void buildString(StringBuilder builder) {
-        builder.append("void");
+    public void format(ExpressionFormatter formatter) {
+        formatter.getBuilder().append("void");
     }
 }

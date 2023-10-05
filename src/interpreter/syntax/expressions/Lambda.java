@@ -2,6 +2,7 @@ package interpreter.syntax.expressions;
 
 import interpreter.program.Definition;
 import interpreter.program.DefinitionType;
+import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
@@ -52,10 +53,14 @@ public class Lambda extends Function{
     }
 
     @Override
-    public void buildString(StringBuilder builder) {
-        builder.append('(').append('λ').append(identifier).append('.');
-        body.buildString(builder);
-        builder.append(')');
+    public void format(ExpressionFormatter formatter) {
+        formatter.push(identifier);
+
+        formatter.getBuilder().append('(').append('λ').append(formatter.getPrime(identifier)).append('.');
+        body.format(formatter);
+        formatter.getBuilder().append(')');
+
+        formatter.pop(identifier);
     }
 
     public static Lambda parse(Program program) {

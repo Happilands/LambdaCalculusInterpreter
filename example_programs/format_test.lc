@@ -1,0 +1,9 @@
+/*
+    Format Tests
+    By: Daan Phlips
+*/
+
+println Lz.((Lp.Lx.(p)) z);     // -> (λz.(λx.z))
+println Lx.((Lp.Lx.(p)) x);     // -> (λx.(λx'.x))
+println Lx.Lx.Lx.x x;           // -> (λx.(λx'.(λx''.x'' x'')))
+println Lx.((Lp.Lx.x (p)) x);   // -> (λx.(λx'.(x' x)))

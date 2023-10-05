@@ -1,5 +1,6 @@
 package interpreter.syntax.statements;
 
+import interpreter.program.ExpressionFormatter;
 import interpreter.syntax.expressions.Expression;
 import interpreter.syntax.expressions.Function;
 import interpreter.syntax.expressions.Identifier;
@@ -29,8 +30,8 @@ public class PrintExp extends Function {
     }
 
     @Override
-    public void buildString(StringBuilder builder) {
-        builder.append("print");
+    public void format(ExpressionFormatter formatter) {
+        formatter.getBuilder().append("print");
     }
 
     @Override

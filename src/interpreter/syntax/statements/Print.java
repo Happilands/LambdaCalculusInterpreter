@@ -1,6 +1,7 @@
 package interpreter.syntax.statements;
 
 import interpreter.exception.SyntaxError;
+import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
@@ -21,11 +22,10 @@ public class Print extends Statement{
     public void run(Program program) {
         body = body.evaluate();
 
-        StringBuilder builder = new StringBuilder();
-        body.buildString(builder);
+        String out = program.getDefinitionStack().formatExpression(body);
 
-        if(newline) System.out.println(builder);
-        else System.out.print(builder);
+        if(newline) System.out.println(out);
+        else System.out.print(out);
     }
 
     public static Print parsePrint(Program program){

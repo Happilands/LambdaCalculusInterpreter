@@ -1,6 +1,7 @@
 package interpreter.syntax.expressions;
 
 import interpreter.program.Definition;
+import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
@@ -44,8 +45,8 @@ public class Identifier extends Expression{
     }
 
     @Override
-    public void buildString(StringBuilder builder) {
-        builder.append(name);
+    public void format(ExpressionFormatter formatter) {
+        formatter.getBuilder().append(formatter.getPrime(this));
     }
 
     public Identifier(String name){
@@ -59,7 +60,7 @@ public class Identifier extends Expression{
 
         return switch (definition.getType()){
             case LAMBDA -> definition.getExpression();
-            case DEFINITION -> new DefinitionIdentifier(definition);
+            case ASSIGNMENT -> new DefinitionIdentifier(definition);
         };
 
         /*return switch (identifier){

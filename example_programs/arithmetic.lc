@@ -1,0 +1,7 @@
+/*
+    Arithmetic
+    By: Daan Phlips
+*/
+
+PLUS    := λm.λn.λf.λx.m f (n f x);     // Addition
+MULT    := λm.λn.λf.m (n f);            // Multiplication

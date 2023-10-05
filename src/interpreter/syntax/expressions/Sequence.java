@@ -1,5 +1,6 @@
 package interpreter.syntax.expressions;
 
+import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
 import interpreter.syntax.TokenType;
 
@@ -102,15 +103,15 @@ public class Sequence extends Expression{
     }
 
     @Override
-    public void buildString(StringBuilder builder) {
-        builder.append('(');
+    public void format(ExpressionFormatter formatter) {
+        formatter.getBuilder().append('(');
         for (int i = 0; i < expressions.size(); i++) {
             Expression expression = expressions.get(i);
-            expression.buildString(builder);
+            expression.format(formatter);
             if(i < expressions.size() - 1)
-                builder.append(' ');
+                formatter.getBuilder().append(' ');
         }
-        builder.append(')');
+        formatter.getBuilder().append(')');
     }
 
     public Sequence(){
