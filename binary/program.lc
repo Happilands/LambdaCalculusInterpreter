@@ -16,5 +16,3 @@ println STACK_GET myStack 0;
 println STACK_GET myStack 1;
 println STACK_GET myStack 2;
 println STACK_GET myStack 3;
-
-println 5 () ();
