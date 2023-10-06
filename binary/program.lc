@@ -3,27 +3,18 @@
     By: Daan Phlips
 */
 
-True    := λx.λy.x;                     // Encoding of the boolean True
-False   := λx.λy.y;                     // Encoding of the boolean False
+import "stack.lc";
 
-0 := λf.λx.x;                           // Encoding of the natural number Zero
-SUCC := λn.λf.λx.f (n f x);             // The successor function
+myStack := STACK_CREATE;
+myStack := STACK_APPEND myStack True;
+myStack := STACK_APPEND myStack 2;
+myStack := STACK_APPEND myStack FIRST;
+myStack := STACK_APPEND myStack (λx.);
 
-1 := SUCC 0;
-2 := SUCC 1;
-3 := SUCC 2;
-4 := SUCC 3;
-5 := SUCC 4;
-6 := SUCC 5;
-7 := SUCC 6;
-8 := SUCC 7;
-9 := SUCC 8;
+println STACK_SIZE myStack;
+println STACK_GET myStack 0;
+println STACK_GET myStack 1;
+println STACK_GET myStack 2;
+println STACK_GET myStack 3;
 
-PAIR    := λx.λy.λf.f x y;                  // Creates a pairing of two elements
-FIRST   := λp.p True;                       // Retrieves the first element
-SECOND  := λp.p False;                      // Retrieves the second element
-
-OMEGA   := (λx.PAIR (SECOND x) (SUCC (SECOND x)));
-
-println (1 SUCC 0);
-println FIRST (OMEGA (OMEGA (PAIR 0 0)));
+println 5 () ();

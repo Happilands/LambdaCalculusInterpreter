@@ -29,16 +29,8 @@ public class Identifier extends Expression{
     }
 
     @Override
-    public Expression substitute(Identifier identifier, Expression expression) {
-        if(this.equals(identifier))
-            return expression.createCopy();
-        else
-            return this;
-    }
-
-    @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append(formatter.getPrime(this));
+        formatter.getBuilder().append(name);
     }
 
     public Identifier(String name){
@@ -51,7 +43,7 @@ public class Identifier extends Expression{
         Definition definition = program.getDefinitionStack().find(identifier);
 
         return switch (definition.getType()){
-            case LAMBDA -> definition.getExpression();
+            case LAMBDA -> new Variable(definition.getIdentifier(), (Lambda) definition.getExpression());
             case ASSIGNMENT -> new DefinitionIdentifier(definition);
         };
 

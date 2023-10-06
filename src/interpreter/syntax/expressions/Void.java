@@ -21,12 +21,7 @@ public class Void extends Expression{
     }
 
     @Override
-    public Expression substitute(Identifier identifier, Expression expression) {
-        return this;
-    }
-
-    @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append("void");
+        formatter.getBuilder().append("()");
     }
 }

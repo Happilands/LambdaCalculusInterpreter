@@ -11,6 +11,7 @@ public class DefinitionIdentifier extends Identifier{
 
     @Override
     public Expression evaluate(){
+        // Definitions should already be simplified, so no need to call evaluate() on the copy
         return definition.getExpression().createCopy();
     }
 }

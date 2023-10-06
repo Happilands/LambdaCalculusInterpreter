@@ -61,15 +61,15 @@ public class Program {
     }
 
     public boolean evaluate(){
-        try {
+        //try {
             for (Statement statement : statements) {
                 statement.run(this);
             }
-        }
+        /*}
         catch (RuntimeException e){
             System.out.println(e.getMessage());
             return false;
-        }
+        }*/
         return true;
     }
 }

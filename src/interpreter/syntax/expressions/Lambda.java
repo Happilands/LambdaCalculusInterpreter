@@ -7,13 +7,23 @@ import interpreter.program.Program;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
 
-public class Lambda extends Function{
-    private final Identifier identifier;
-    private Expression body;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
-    public Lambda(Identifier identifier, Expression body){
-        this.identifier = identifier;
-        this.body = body;
+public class Lambda extends Function{
+    private final String varName;
+    private Expression body;
+    private final Queue<Variable> variables;
+    private Lambda copyInProgress;
+
+    public Lambda(String varName){
+        this.varName = varName;
+        this.body = null;
+        this.variables = new ArrayDeque<>();
+    }
+
+    public String getName() {
+        return varName;
     }
 
     @Override
@@ -23,52 +33,65 @@ public class Lambda extends Function{
     }
 
     @Override
+    public Expression createCopy() {
+        copyInProgress = new Lambda(varName);
+
+        copyInProgress.body = this.body.createCopy();
+
+        Expression result = copyInProgress;
+        copyInProgress = null;
+
+        return result;
+    }
+
+    public void registerVariable(Variable variable){
+        variables.add(variable);
+    }
+
+    public Expression registerVariableCopy(){
+        Lambda parent = copyInProgress != null ? copyInProgress : this;
+        return new Variable(varName, parent);
+    }
+
+    @Override
     public Expression takeInput(Expression expression){
         Expression evaluated = expression.evaluate();
-        body = body.substitute(identifier, evaluated);
+
+        if(variables.isEmpty())
+            return body.evaluate();
+
+        while (variables.size() > 1)
+            variables.poll().setSubstitution(evaluated.createCopy());
+        variables.poll().setSubstitution(evaluated);
 
         return body.evaluate();
     }
 
     @Override
-    public Expression createCopy() {
-        return new Lambda(this.identifier, body.createCopy());
-    }
-
-    @Override
-    public Expression substitute(Identifier identifier, Expression expression) {
-        if(identifier.equals(this.identifier))
-            return this;
-
-        body = body.substitute(identifier, expression);
-        return this;
-    }
-
-    @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.push(identifier);
+        formatter.push(this);
 
-        formatter.getBuilder().append('(').append('λ').append(formatter.getPrime(identifier)).append('.');
+        formatter.getBuilder().append('(').append('λ').append(formatter.getPrime(this)).append('.');
         body.format(formatter);
         formatter.getBuilder().append(')');
 
-        formatter.pop(identifier);
+        formatter.pop(this);
     }
 
     public static Lambda parse(Program program) {
-        Token lambda = program.getTokenStack().expect(TokenType.LAMBDA);
-        Token varName = program.getTokenStack().expect(TokenType.IDENTIFIER);
-        Token dot = program.getTokenStack().expect(TokenType.DOT);
+        Token lambdaToken = program.getTokenStack().expect(TokenType.LAMBDA);
+        Token varToken = program.getTokenStack().expect(TokenType.IDENTIFIER);
+        Token dotToken = program.getTokenStack().expect(TokenType.DOT);
 
-        String idName = varName.getString();
-        Identifier identifier = new Identifier(varName.getString());
+        String varName = varToken.getString();
+        Lambda lambda = new Lambda(varName);
 
         // PUSH
-        program.getDefinitionStack().push(new Definition(idName, identifier, DefinitionType.LAMBDA));
-        Lambda function = new Lambda(identifier, Sequence.parseAny(program));
+        program.getDefinitionStack().push(new Definition(varName, lambda, DefinitionType.LAMBDA));
+        lambda.body = Sequence.parseAny(program);
         program.getDefinitionStack().pop();
         // POP
 
-        return function;
+        return lambda;
     }
 }

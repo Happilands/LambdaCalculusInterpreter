@@ -1,21 +1,20 @@
 package interpreter.program;
 
-import interpreter.syntax.expressions.Identifier;
+import interpreter.syntax.expressions.Lambda;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 
 public class ExpressionFormatter {
-    private final Map<String, Integer> toPrimeCount;
-    private final Map<Identifier, Stack<Integer>> toPrimeStack;
-    private final Stack<Identifier> identifierStack;
+    private final Map<String, Integer> name2primeCount;
+    private final Map<Lambda, Integer> lambda2primeCount;
     private final StringBuilder builder;
 
     public ExpressionFormatter(){
-        toPrimeCount = new HashMap<>();
-        toPrimeStack = new HashMap<>();
-        identifierStack = new Stack<>();
+        name2primeCount = new HashMap<>();
+        lambda2primeCount = new HashMap<>();
         builder = new StringBuilder();
     }
 
@@ -23,30 +22,18 @@ public class ExpressionFormatter {
         return builder;
     }
 
-    public String push(Identifier identifier){
-        identifierStack.push(identifier);
-
-        int primeCount = toPrimeCount.merge(identifier.getName(), 1, Integer::sum);
-        Stack<Integer> stack = toPrimeStack.computeIfAbsent(identifier, (id) -> new Stack<>());
-
-        stack.push(primeCount);
-
-        return getPrime(identifier);
+    public void push(Lambda lambda){
+        int primeCount = name2primeCount.merge(lambda.getName(), 1, Integer::sum);
+        lambda2primeCount.put(lambda, primeCount);
     }
 
-    public String getPrime(Identifier identifier){
-        Integer count = toPrimeCount.get(identifier.getName());
-
-        count = count == null ? 0 : count - 1;
-
-        return identifier.getName() + "'".repeat(count);
+    public String getPrime(Lambda lambda){
+        int count = Objects.requireNonNull(lambda2primeCount.get(lambda));
+        return lambda.getName() + "'".repeat(count - 1);
     }
 
-    public void pop(Identifier identifier){
-        if(identifier != identifierStack.pop())
-            throw new RuntimeException("Invalid identifier");
-
-        toPrimeCount.merge(identifier.getName(), -1, Integer::sum);
-        toPrimeStack.get(identifier).pop();
+    public void pop(Lambda lambda){
+        name2primeCount.merge(lambda.getName(), -1, Integer::sum);
+        Objects.requireNonNull(lambda2primeCount.remove(lambda));
     }
 }

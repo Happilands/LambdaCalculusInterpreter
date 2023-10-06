@@ -83,15 +83,6 @@ public class Sequence extends Expression{
     }
 
     @Override
-    public Expression substitute(Identifier identifier, Expression expression) {
-        for (int i = 0; i < expressions.size(); i++) {
-            expressions.set(i, expressions.get(i).substitute(identifier, expression));
-        }
-
-        return this;
-    }
-
-    @Override
     public void format(ExpressionFormatter formatter) {
         formatter.getBuilder().append('(');
         for (int i = 0; i < expressions.size(); i++) {

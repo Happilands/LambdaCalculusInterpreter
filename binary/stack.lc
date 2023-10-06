@@ -19,8 +19,7 @@ STACK_POP := λstack.
 /* then */ (stack)
 /* else */ PAIR (PRED (STACK_SIZE)) (FIRST (SECOND stack));
 
-/* Gets the nth element of the stack, starting at index zero
-if the index is greater than the size of the stack, returns the last element */
+/* Gets the nth element of the stack, starting at index zero */
 STACK_GET := λstack.λindex.SECOND(
 ((SUCC index) PRED (STACK_SIZE stack)) FIRST (SECOND stack)
 );
