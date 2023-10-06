@@ -3,7 +3,7 @@
     By: Daan Phlips
 */
 
-import "example_programs/numbers.lc";
+import "numbers.lc";
 
 PLUS    := λm.λn.λf.λx.m f (n f x);     // Addition
 
@@ -17,13 +17,4 @@ SECOND  := λp.p F;                      // Retrieves the second element
 FIBSTEP := λp.(PAIR (PLUS (FIRST p) (SECOND p)) (FIRST p));
 FIB := λn.FIRST (n FIBSTEP (PAIR 0 1));
 
-println FIB 1;
-println FIB 2;
-println FIB 3;
-println FIB 4;
-println FIB 5;
-println FIB 6;
-println FIB 7;
-println FIB 8;
-println FIB 9;
-println FIB 10;
+println FIB 15;

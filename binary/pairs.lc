@@ -1,0 +1,14 @@
+/*
+    Pairs
+    By: Daan Phlips
+*/
+
+import "numbers.lc";
+
+PAIR    := λx.λy.λf.f x y;                  // Creates a pairing of two elements
+FIRST   := λp.p True;                       // Retrieves the first element
+SECOND  := λp.p False;                      // Retrieves the second element
+
+PRED    := λn.FIRST (n                      // The predecessor function
+(λx.PAIR (SECOND x) (SUCC (SECOND x)))
+(PAIR 0 0));

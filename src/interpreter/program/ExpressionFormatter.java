@@ -35,8 +35,9 @@ public class ExpressionFormatter {
     }
 
     public String getPrime(Identifier identifier){
+        Integer count = toPrimeCount.get(identifier.getName());
 
-        int count = toPrimeStack.get(identifier).peek() - 1;
+        count = count == null ? 0 : count - 1;
 
         return identifier.getName() + "'".repeat(count);
     }

@@ -14,8 +14,11 @@ public class Program {
     private final List<Statement> statements;
     private final DefinitionStack definitionStack;
     private final Stack<ProgramSegment> segments;
+    private final Path workingDirectory;
 
-    public Program(){
+    public Program(Path workingDirectory){
+        this.workingDirectory = workingDirectory;
+
         statements = new ArrayList<>();
         definitionStack = new DefinitionStack();
         segments = new Stack<>();
@@ -25,10 +28,16 @@ public class Program {
         statements.add(statement);
     }
 
+    public Path resolveFile(Path file){
+        return workingDirectory.resolve(file);
+    }
+
     public void importFile(Path file){
+        Path path = workingDirectory.resolve(file);
+
         String code = null;
         try {
-            code = Files.readString(file);
+            code = Files.readString(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,6 +54,10 @@ public class Program {
 
     public TokenStack getTokenStack(){
         return segments.peek().getTokenStack();
+    }
+
+    public Path getWorkingDirectory(){
+        return workingDirectory;
     }
 
     public boolean evaluate(){

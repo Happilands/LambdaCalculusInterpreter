@@ -5,11 +5,11 @@ import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
-        Program program = new Program();
+        Program program = new Program(Path.of("binary/"));
 
         StopWatch stopWatch = new StopWatch();
 
-        program.importFile(Path.of("example_programs/fibonacci.lc"));
+        program.importFile(Path.of("program.lc"));
 
         program.evaluate();
 

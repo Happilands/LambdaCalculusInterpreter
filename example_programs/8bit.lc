@@ -1,0 +1,15 @@
+/*
+    8bit Arithmetic
+    By: Daan Phlips
+*/
+
+import "binary0-255.lc";
+
+println b12;
+
+bNOT := λbn.          PAIR () (NOT (SECOND bn));
+
+/*FIBSTEP := λp.(PAIR (ADD (FIRST p) (SECOND p)) (FIRST p));
+FIB := λn.FIRST (n FIBSTEP (PAIR 0 1));
+
+println FIB 12;*/

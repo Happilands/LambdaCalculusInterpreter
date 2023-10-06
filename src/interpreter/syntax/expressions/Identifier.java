@@ -29,14 +29,6 @@ public class Identifier extends Expression{
     }
 
     @Override
-    public Expression substituteAndEvaluate(Identifier identifier, Expression expression) {
-        if(this.equals(identifier))
-            return expression.createCopy();
-        else
-            return this;
-    }
-
-    @Override
     public Expression substitute(Identifier identifier, Expression expression) {
         if(this.equals(identifier))
             return expression.createCopy();

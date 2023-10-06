@@ -1,0 +1,26 @@
+/*
+    Stacks
+    By: Daan Phlips
+*/
+
+import "pairs.lc";
+
+STACK_CREATE := PAIR 0 (λx.);
+STACK_SIZE := λstack.FIRST stack;
+
+STACK_APPEND := λstack.λelement.PAIR
+(SUCC (STACK_SIZE stack))           // increment length
+(PAIR (SECOND stack) (element));      // push element
+
+STACK_PEEK := λstack.SECOND (SECOND stack);
+
+STACK_POP := λstack.
+/*  if  */ ISZERO (STACK_SIZE stack)
+/* then */ (stack)
+/* else */ PAIR (PRED (STACK_SIZE)) (FIRST (SECOND stack));
+
+/* Gets the nth element of the stack, starting at index zero
+if the index is greater than the size of the stack, returns the last element */
+STACK_GET := λstack.λindex.SECOND(
+((SUCC index) PRED (STACK_SIZE stack)) FIRST (SECOND stack)
+);

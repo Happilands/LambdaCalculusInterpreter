@@ -12,8 +12,6 @@ public abstract class Expression {
 
     public abstract Expression createCopy();
 
-    public abstract Expression substituteAndEvaluate(Identifier identifier, Expression expression);
-
     public abstract Expression substitute(Identifier identifier, Expression expression);
 
     public abstract void format(ExpressionFormatter formatter);

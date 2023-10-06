@@ -1,0 +1,303 @@
+/*
+    Binary numbers from 1-255
+    By: Daan Phlips
+*/
+
+import "example_programs/lists.lc";
+
+b0 := PACK_8 F F F F F F F F;
+b1 := PACK_8 F F F F F F F T;
+
+CARRY_3_BITS := λa.λb.λc.((a OR AND) b c);
+ADD_3_BITS := λa.λb.λc.(XOR a (XOR b c));
+
+ADD_FIRST := λn.λm.PACK_4 (FIRST n) (FIRST m) (AND (SECOND n) (SECOND m)) (XOR (SECOND n) (SECOND m));
+
+ADD_UNPACKED := λn.λm.λc.λr.PACK_4
+(FIRST n)
+(FIRST m)
+(CARRY_3_BITS (SECOND n) (SECOND m) c)
+(PAIR r (ADD_3_BITS (SECOND n) (SECOND m) c));
+
+ADD_PACKED := λnmcr.ADD_UNPACKED
+((FIRST (FIRST (FIRST nmcr))))
+(SECOND (FIRST (FIRST nmcr)))
+(SECOND (FIRST nmcr))
+(SECOND nmcr);
+
+ADD_LAST := λb1b2cr.PAIR (SECOND b1b2cr) (
+ADD_3_BITS
+(FIRST (FIRST (FIRST b1b2cr)))
+(SECOND (FIRST (FIRST b1b2cr)))
+(SECOND (FIRST b1b2cr))
+);
+
+6_TIMES := λf.λx.(f (f (f (f (f (f x))))));
+
+REV_STEP := λin_out.PAIR
+(FIRST (FIRST (in_out)))
+(PAIR (SECOND in_out) (SECOND (FIRST in_out)));
+REV_END := λin_out.PAIR (SECOND in_out) (FIRST in_out);
+REV := λn.REV_END(6_TIMES REV_STEP (PAIR (FIRST n) (SECOND n)));
+
+ADD := λn.λm.REV(ADD_LAST
+(6_TIMES (ADD_PACKED)
+(ADD_FIRST n m)
+));
+
+SUCC := λbn.ADD bn b1;
+
+b2 := SUCC b1;
+b3 := SUCC b2;
+b4 := SUCC b3;
+b5 := SUCC b4;
+b6 := SUCC b5;
+b7 := SUCC b6;
+b8 := SUCC b7;
+b9 := SUCC b8;
+b10 := SUCC b9;
+b11 := SUCC b10;
+b12 := SUCC b11;
+b13 := SUCC b12;
+b14 := SUCC b13;
+b15 := SUCC b14;
+b16 := SUCC b15;
+b17 := SUCC b16;
+b18 := SUCC b17;
+b19 := SUCC b18;
+b20 := SUCC b19;
+b21 := SUCC b20;
+b22 := SUCC b21;
+b23 := SUCC b22;
+b24 := SUCC b23;
+b25 := SUCC b24;
+b26 := SUCC b25;
+b27 := SUCC b26;
+b28 := SUCC b27;
+b29 := SUCC b28;
+b30 := SUCC b29;
+b31 := SUCC b30;
+b32 := SUCC b31;
+b33 := SUCC b32;
+b34 := SUCC b33;
+b35 := SUCC b34;
+b36 := SUCC b35;
+b37 := SUCC b36;
+b38 := SUCC b37;
+b39 := SUCC b38;
+b40 := SUCC b39;
+b41 := SUCC b40;
+b42 := SUCC b41;
+b43 := SUCC b42;
+b44 := SUCC b43;
+b45 := SUCC b44;
+b46 := SUCC b45;
+b47 := SUCC b46;
+b48 := SUCC b47;
+b49 := SUCC b48;
+b50 := SUCC b49;
+b51 := SUCC b50;
+b52 := SUCC b51;
+b53 := SUCC b52;
+b54 := SUCC b53;
+b55 := SUCC b54;
+b56 := SUCC b55;
+b57 := SUCC b56;
+b58 := SUCC b57;
+b59 := SUCC b58;
+b60 := SUCC b59;
+b61 := SUCC b60;
+b62 := SUCC b61;
+b63 := SUCC b62;
+b64 := SUCC b63;
+b65 := SUCC b64;
+b66 := SUCC b65;
+b67 := SUCC b66;
+b68 := SUCC b67;
+b69 := SUCC b68;
+b70 := SUCC b69;
+b71 := SUCC b70;
+b72 := SUCC b71;
+b73 := SUCC b72;
+b74 := SUCC b73;
+b75 := SUCC b74;
+b76 := SUCC b75;
+b77 := SUCC b76;
+b78 := SUCC b77;
+b79 := SUCC b78;
+b80 := SUCC b79;
+b81 := SUCC b80;
+b82 := SUCC b81;
+b83 := SUCC b82;
+b84 := SUCC b83;
+b85 := SUCC b84;
+b86 := SUCC b85;
+b87 := SUCC b86;
+b88 := SUCC b87;
+b89 := SUCC b88;
+b90 := SUCC b89;
+b91 := SUCC b90;
+b92 := SUCC b91;
+b93 := SUCC b92;
+b94 := SUCC b93;
+b95 := SUCC b94;
+b96 := SUCC b95;
+b97 := SUCC b96;
+b98 := SUCC b97;
+b99 := SUCC b98;
+b100 := SUCC b99;
+b101 := SUCC b100;
+b102 := SUCC b101;
+b103 := SUCC b102;
+b104 := SUCC b103;
+b105 := SUCC b104;
+b106 := SUCC b105;
+b107 := SUCC b106;
+b108 := SUCC b107;
+b109 := SUCC b108;
+b110 := SUCC b109;
+b111 := SUCC b110;
+b112 := SUCC b111;
+b113 := SUCC b112;
+b114 := SUCC b113;
+b115 := SUCC b114;
+b116 := SUCC b115;
+b117 := SUCC b116;
+b118 := SUCC b117;
+b119 := SUCC b118;
+b120 := SUCC b119;
+b121 := SUCC b120;
+b122 := SUCC b121;
+b123 := SUCC b122;
+b124 := SUCC b123;
+b125 := SUCC b124;
+b126 := SUCC b125;
+b127 := SUCC b126;
+b128 := SUCC b127;
+b129 := SUCC b128;
+b130 := SUCC b129;
+b131 := SUCC b130;
+b132 := SUCC b131;
+b133 := SUCC b132;
+b134 := SUCC b133;
+b135 := SUCC b134;
+b136 := SUCC b135;
+b137 := SUCC b136;
+b138 := SUCC b137;
+b139 := SUCC b138;
+b140 := SUCC b139;
+b141 := SUCC b140;
+b142 := SUCC b141;
+b143 := SUCC b142;
+b144 := SUCC b143;
+b145 := SUCC b144;
+b146 := SUCC b145;
+b147 := SUCC b146;
+b148 := SUCC b147;
+b149 := SUCC b148;
+b150 := SUCC b149;
+b151 := SUCC b150;
+b152 := SUCC b151;
+b153 := SUCC b152;
+b154 := SUCC b153;
+b155 := SUCC b154;
+b156 := SUCC b155;
+b157 := SUCC b156;
+b158 := SUCC b157;
+b159 := SUCC b158;
+b160 := SUCC b159;
+b161 := SUCC b160;
+b162 := SUCC b161;
+b163 := SUCC b162;
+b164 := SUCC b163;
+b165 := SUCC b164;
+b166 := SUCC b165;
+b167 := SUCC b166;
+b168 := SUCC b167;
+b169 := SUCC b168;
+b170 := SUCC b169;
+b171 := SUCC b170;
+b172 := SUCC b171;
+b173 := SUCC b172;
+b174 := SUCC b173;
+b175 := SUCC b174;
+b176 := SUCC b175;
+b177 := SUCC b176;
+b178 := SUCC b177;
+b179 := SUCC b178;
+b180 := SUCC b179;
+b181 := SUCC b180;
+b182 := SUCC b181;
+b183 := SUCC b182;
+b184 := SUCC b183;
+b185 := SUCC b184;
+b186 := SUCC b185;
+b187 := SUCC b186;
+b188 := SUCC b187;
+b189 := SUCC b188;
+b190 := SUCC b189;
+b191 := SUCC b190;
+b192 := SUCC b191;
+b193 := SUCC b192;
+b194 := SUCC b193;
+b195 := SUCC b194;
+b196 := SUCC b195;
+b197 := SUCC b196;
+b198 := SUCC b197;
+b199 := SUCC b198;
+b200 := SUCC b199;
+b201 := SUCC b200;
+b202 := SUCC b201;
+b203 := SUCC b202;
+b204 := SUCC b203;
+b205 := SUCC b204;
+b206 := SUCC b205;
+b207 := SUCC b206;
+b208 := SUCC b207;
+b209 := SUCC b208;
+b210 := SUCC b209;
+b211 := SUCC b210;
+b212 := SUCC b211;
+b213 := SUCC b212;
+b214 := SUCC b213;
+b215 := SUCC b214;
+b216 := SUCC b215;
+b217 := SUCC b216;
+b218 := SUCC b217;
+b219 := SUCC b218;
+b220 := SUCC b219;
+b221 := SUCC b220;
+b222 := SUCC b221;
+b223 := SUCC b222;
+b224 := SUCC b223;
+b225 := SUCC b224;
+b226 := SUCC b225;
+b227 := SUCC b226;
+b228 := SUCC b227;
+b229 := SUCC b228;
+b230 := SUCC b229;
+b231 := SUCC b230;
+b232 := SUCC b231;
+b233 := SUCC b232;
+b234 := SUCC b233;
+b235 := SUCC b234;
+b236 := SUCC b235;
+b237 := SUCC b236;
+b238 := SUCC b237;
+b239 := SUCC b238;
+b240 := SUCC b239;
+b241 := SUCC b240;
+b242 := SUCC b241;
+b243 := SUCC b242;
+b244 := SUCC b243;
+b245 := SUCC b244;
+b246 := SUCC b245;
+b247 := SUCC b246;
+b248 := SUCC b247;
+b249 := SUCC b248;
+b250 := SUCC b249;
+b251 := SUCC b250;
+b252 := SUCC b251;
+b253 := SUCC b252;
+b254 := SUCC b253;
+b255 := SUCC b254;

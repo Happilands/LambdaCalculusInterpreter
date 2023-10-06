@@ -24,7 +24,8 @@ public class Lambda extends Function{
 
     @Override
     public Expression takeInput(Expression expression){
-        body = body.substitute(identifier, expression);
+        Expression evaluated = expression.evaluate();
+        body = body.substitute(identifier, evaluated);
 
         return body.evaluate();
     }
@@ -32,15 +33,6 @@ public class Lambda extends Function{
     @Override
     public Expression createCopy() {
         return new Lambda(this.identifier, body.createCopy());
-    }
-
-    @Override
-    public Expression substituteAndEvaluate(Identifier identifier, Expression expression) {
-        if(identifier.equals(this.identifier))
-            return this;
-
-        body = body.substituteAndEvaluate(identifier, expression);
-        return this.evaluate();
     }
 
     @Override

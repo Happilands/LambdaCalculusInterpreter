@@ -11,6 +11,6 @@ public class DefinitionIdentifier extends Identifier{
 
     @Override
     public Expression evaluate(){
-        return definition.getExpression().createCopy().evaluate();
+        return definition.getExpression().createCopy();
     }
 }

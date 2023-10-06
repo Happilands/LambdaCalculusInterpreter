@@ -42,7 +42,7 @@ public class DefinitionStack {
 
         Stack<Definition> defStack = format2definition.get(format);
 
-        if(defStack == null)
+        if(defStack == null || defStack.isEmpty())
             return format;
         else
             return format + "\n\tequivalent to: " + defStack.peek().getIdentifier();
@@ -60,7 +60,7 @@ public class DefinitionStack {
 
         Stack<Definition> idStack = id2definition.get(identifier.getString());
 
-        if(idStack.isEmpty())
+        if(idStack == null || idStack.isEmpty())
             throw new SyntaxError("Found undefined identifier: '" + identifier.getString() + "'",
                     identifier.getLine(), identifier.getCharacter());
 

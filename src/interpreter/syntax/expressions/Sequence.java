@@ -82,17 +82,6 @@ public class Sequence extends Expression{
         return copy;
     }
 
-
-
-    @Override
-    public Expression substituteAndEvaluate(Identifier identifier, Expression expression) {
-        for (int i = 0; i < expressions.size(); i++) {
-            expressions.set(i, expressions.get(i).substituteAndEvaluate(identifier, expression));
-        }
-
-        return this;
-    }
-
     @Override
     public Expression substitute(Identifier identifier, Expression expression) {
         for (int i = 0; i < expressions.size(); i++) {

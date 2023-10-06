@@ -2,8 +2,16 @@ package interpreter.syntax.expressions;
 
 import interpreter.program.ExpressionFormatter;
 
-public class Void extends Expression{
-    public static Void instance = new Void();
+public class Variable extends Expression{
+    private final String name;
+
+    public Variable(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
 
     @Override
     public Expression evaluate() {
@@ -12,21 +20,21 @@ public class Void extends Expression{
 
     @Override
     public ExpressionType getType() {
-        return ExpressionType.VOID;
+        return ExpressionType.VARIABLE;
     }
 
     @Override
     public Expression createCopy() {
-        return this;
+        return null;
     }
 
     @Override
     public Expression substitute(Identifier identifier, Expression expression) {
-        return this;
+        return null;
     }
 
     @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append("void");
+
     }
 }

@@ -20,11 +20,6 @@ public class PrintExp extends Function {
     }
 
     @Override
-    public Expression substituteAndEvaluate(Identifier identifier, Expression expression) {
-        return this;
-    }
-
-    @Override
     public Expression substitute(Identifier identifier, Expression expression) {
         return this;
     }

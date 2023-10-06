@@ -3,8 +3,12 @@
     By: Daan Phlips
 */
 
-SUCC := λn.λf.λx.f (n f x);             // The successor function
+import "booleans.lc";
+
 0 := λf.λx.x;                           // Encoding of the natural number Zero
+SUCC := λn.λf.λx.f (n f x);             // The successor function
+
+ISZERO := λn.n (λx.False) True;
 
 1 := SUCC 0;
 2 := SUCC 1;
