@@ -11,6 +11,9 @@ public class Main {
 
         program.importFile(Path.of("program.lc"));
 
+        System.out.print("Parsing ");
+        stopWatch.printTime();
+
         program.evaluate();
 
         System.out.print("Evaluation ");

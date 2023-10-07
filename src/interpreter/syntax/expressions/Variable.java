@@ -5,16 +5,14 @@ import interpreter.program.ExpressionFormatter;
 import java.util.Objects;
 
 public class Variable extends Expression{
-    private final String name;
     private Expression substitution;
-    private final Lambda parent;
+    private final Lambda lambda;
 
-    public Variable(String name, Lambda parent){
-        this.name = name;
+    public Variable(Lambda lambda){
         this.substitution = null;
-        this.parent = parent;
+        this.lambda = lambda;
 
-        parent.registerVariable(this);
+        lambda.registerVariable(this);
     }
 
     public void setSubstitution(Expression expression){
@@ -33,11 +31,11 @@ public class Variable extends Expression{
 
     @Override
     public Expression createCopy() {
-        return parent.registerVariableCopy();
+        return lambda.registerVariableCopy();
     }
 
     @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append(formatter.getPrime(parent));
+        formatter.getBuilder().append(formatter.getPrime(lambda));
     }
 }

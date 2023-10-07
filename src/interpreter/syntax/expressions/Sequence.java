@@ -12,9 +12,9 @@ public class Sequence extends Expression{
 
     @Override
     public Expression evaluate() {
-        while (expressions.size() > 1){
+        while (expressions.size() > 1) {
             expressions.set(0, expressions.get(0).evaluate());
-            if(expressions.get(0).getType() == ExpressionType.VOID) {
+            if (expressions.get(0).getType() == ExpressionType.VOID) {
                 expressions.remove(0);
                 continue;
             }
@@ -22,49 +22,32 @@ public class Sequence extends Expression{
             Expression left = expressions.get(0);
             Expression right = expressions.get(1);
 
-            if(left.getType() == ExpressionType.FUNCTION){
-                expressions.set(0, ((Function)left).takeInput(right));
+            if (right.getType() == ExpressionType.VOID) {
                 expressions.remove(1);
+                continue;
             }
-            else {
-                for (int i = 1; i < expressions.size(); i++) {
-                    expressions.set(i, expressions.get(i).evaluate());
-                    if(expressions.get(i).getType() == ExpressionType.VOID) {
-                        expressions.remove(i);
-                        i--;
-                    }
+
+            if (left.getType() == ExpressionType.FUNCTION) {
+                expressions.set(0, ((Function) left).takeInput(right));
+                expressions.remove(1);
+                continue;
+            }
+
+            // if the first expression in the sequence isn't a lambda, simplify the rest and return
+            for (int i = 1; i < expressions.size(); i++) {
+                expressions.set(i, expressions.get(i).evaluate());
+                if (expressions.get(i).getType() == ExpressionType.VOID) {
+                    expressions.remove(i);
+                    i--;
                 }
-                return this;
             }
+            return this;
         }
 
         if(expressions.size() == 1)
             return expressions.get(0).evaluate();
         else
             return Void.instance;
-
-        /*if(expressions.size() == 1)
-            return expressions.get(0).evaluate();
-
-        int i = 0;
-        while (i < expressions.size() - 1){
-
-            expressions.set(i, expressions.get(i).evaluate());
-            Expression left = expressions.get(i);
-            Expression right = expressions.get(i + 1);
-
-            if(left.getType() == ExpressionType.LAMBDA){
-                Expression result = ((Lambda)left).substitute(right);
-                expressions.set(i, result);
-                expressions.remove(i + 1);
-            }
-            else i++;
-        }
-
-        if(expressions.size() == 1)
-            return expressions.get(0).evaluate();
-
-        return this;*/
     }
 
     @Override

@@ -50,11 +50,14 @@ public class Lambda extends Function{
 
     public Expression registerVariableCopy(){
         Lambda parent = copyInProgress != null ? copyInProgress : this;
-        return new Variable(varName, parent);
+        return new Variable(parent);
     }
 
     @Override
     public Expression takeInput(Expression expression){
+        if(variables.isEmpty())
+            return body.evaluate();
+
         Expression evaluated = expression.evaluate();
 
         if(!variables.isEmpty()) {

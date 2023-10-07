@@ -43,7 +43,7 @@ public class Identifier extends Expression{
         Definition definition = program.getDefinitionStack().find(identifier);
 
         return switch (definition.getType()){
-            case LAMBDA -> new Variable(definition.getIdentifier(), (Lambda) definition.getExpression());
+            case LAMBDA -> new Variable((Lambda) definition.getExpression());
             case ASSIGNMENT -> new DefinitionIdentifier(definition);
         };
 
