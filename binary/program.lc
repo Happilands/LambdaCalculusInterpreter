@@ -3,6 +3,8 @@
     By: Daan Phlips
 */
 
-import "binary_numbers.lc";
+import "infinitely_expanding_binary_numbers.lc";
 
-println ADDb 7b 3b;
+// Exponentially slow, idk why
+
+println ADDb 5b 3b;

@@ -28,6 +28,8 @@ public class ExpressionFormatter {
     }
 
     public String getPrime(Lambda lambda){
+        if(lambda2primeCount.get(lambda) == null)
+            return lambda.getName();
         int count = Objects.requireNonNull(lambda2primeCount.get(lambda));
         return lambda.getName() + "'".repeat(count - 1);
     }

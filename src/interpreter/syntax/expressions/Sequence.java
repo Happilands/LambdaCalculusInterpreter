@@ -10,10 +10,18 @@ import java.util.List;
 public class Sequence extends Expression{
     private final List<Expression> expressions;
 
+    private void addExpression(Expression expression){
+        expressions.add(expression);
+    }
+
+    private void replaceExpression(int index, Expression expression){
+        expressions.set(index, expression);
+    }
+
     @Override
     public Expression evaluate() {
         while (expressions.size() > 1) {
-            expressions.set(0, expressions.get(0).evaluate());
+            replaceExpression(0, expressions.get(0).evaluate());
             if (expressions.get(0).getType() == ExpressionType.VOID) {
                 expressions.remove(0);
                 continue;
@@ -28,14 +36,14 @@ public class Sequence extends Expression{
             }
 
             if (left.getType() == ExpressionType.FUNCTION) {
-                expressions.set(0, ((Function) left).takeInput(right));
+                replaceExpression(0, ((Function) left).takeInput(right));
                 expressions.remove(1);
                 continue;
             }
 
             // if the first expression in the sequence isn't a lambda, simplify the rest and return
             for (int i = 1; i < expressions.size(); i++) {
-                expressions.set(i, expressions.get(i).evaluate());
+                replaceExpression(i, expressions.get(i).evaluate());
                 if (expressions.get(i).getType() == ExpressionType.VOID) {
                     expressions.remove(i);
                     i--;
@@ -58,9 +66,8 @@ public class Sequence extends Expression{
     @Override
     public Expression createCopy() {
         Sequence copy = new Sequence();
-
-        for (int i = 0; i < expressions.size(); i++) {
-            copy.expressions.add(expressions.get(i).createCopy());
+        for (Expression expression : expressions) {
+            copy.addExpression(expression.createCopy());
         }
         return copy;
     }
@@ -86,7 +93,7 @@ public class Sequence extends Expression{
         List<TokenType> closeTypes = List.of(TokenType.TERMINATOR, TokenType.CLOSE_BRACKET);
 
         while (!closeTypes.contains(program.getTokenStack().peek().getType())){
-            sequence.expressions.add(Expression.parse(program));
+            sequence.addExpression(Expression.parse(program));
         }
 
         return sequence;
@@ -96,7 +103,7 @@ public class Sequence extends Expression{
         Sequence sequence = new Sequence();
 
         while (program.getTokenStack().peek().getType() != TokenType.TERMINATOR){
-            sequence.expressions.add(Expression.parse(program));
+            sequence.addExpression(Expression.parse(program));
         }
 
         return sequence;
@@ -108,7 +115,7 @@ public class Sequence extends Expression{
         program.getTokenStack().expect(TokenType.OPEN_BRACKET);
 
         while (program.getTokenStack().peek().getType() != TokenType.CLOSE_BRACKET){
-            sequence.expressions.add(Expression.parse(program));
+            sequence.addExpression(Expression.parse(program));
         }
 
         program.getTokenStack().expect(TokenType.CLOSE_BRACKET);

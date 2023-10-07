@@ -6,6 +6,10 @@ import interpreter.program.Program;
 import interpreter.syntax.Token;
 
 public abstract class Expression {
+    /**
+     * Evaluates this expression to its simplest form.
+     * @return the simplest form
+     */
     public abstract Expression evaluate();
 
     public abstract ExpressionType getType();

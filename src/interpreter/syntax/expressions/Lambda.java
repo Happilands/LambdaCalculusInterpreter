@@ -61,8 +61,9 @@ public class Lambda extends Function{
         Expression evaluated = expression.evaluate();
 
         if(!variables.isEmpty()) {
-            while (variables.size() > 1)
+            while (variables.size() > 1) {
                 variables.poll().setSubstitution(evaluated.createCopy());
+            }
             variables.poll().setSubstitution(evaluated);
         }
 

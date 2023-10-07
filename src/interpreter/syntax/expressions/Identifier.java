@@ -7,20 +7,21 @@ import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
 
 public class Identifier extends Expression{
-    private final String name;
+    private final Definition definition;
+
+    public Identifier(Definition definition){
+        this.definition = definition;
+    }
 
     @Override
-    public Expression evaluate() {
-        return this;
+    public Expression evaluate(){
+        // Definitions should already be simplified, so no need to call evaluate() on the copy
+        return definition.getExpression().createCopy();
     }
 
     @Override
     public ExpressionType getType() {
         return ExpressionType.IDENTIFIER;
-    }
-
-    public String getName(){
-        return name;
     }
 
     @Override
@@ -30,11 +31,7 @@ public class Identifier extends Expression{
 
     @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append(name);
-    }
-
-    public Identifier(String name){
-        this.name = name;
+        formatter.getBuilder().append(definition.getIdentifier());
     }
 
     public static Expression parse(Program program){
@@ -44,12 +41,7 @@ public class Identifier extends Expression{
 
         return switch (definition.getType()){
             case LAMBDA -> new Variable((Lambda) definition.getExpression());
-            case ASSIGNMENT -> new DefinitionIdentifier(definition);
+            case ASSIGNMENT -> new Identifier(definition);
         };
-
-        /*return switch (identifier){
-            case "print" -> PrintExp.instance;
-            default -> new Identifier(identifier);
-        };*/
     }
 }

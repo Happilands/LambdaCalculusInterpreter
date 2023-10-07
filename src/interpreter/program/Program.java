@@ -6,15 +6,14 @@ import interpreter.syntax.statements.Statement;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Program {
     private final List<Statement> statements;
     private final DefinitionStack definitionStack;
     private final Stack<ProgramSegment> segments;
     private final Path workingDirectory;
+    private final Set<Path> imports;
 
     public Program(Path workingDirectory){
         this.workingDirectory = workingDirectory;
@@ -22,6 +21,7 @@ public class Program {
         statements = new ArrayList<>();
         definitionStack = new DefinitionStack();
         segments = new Stack<>();
+        imports = new HashSet<>();
     }
 
     public void addStatement(Statement statement){
@@ -35,12 +35,17 @@ public class Program {
     public void importFile(Path file){
         Path path = workingDirectory.resolve(file);
 
+        if(imports.contains(path))
+            return;
+
         String code = null;
         try {
             code = Files.readString(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        imports.add(path);
 
         ProgramSegment segment = new ProgramSegment(code);
         segments.push(segment);
@@ -56,15 +61,11 @@ public class Program {
         return segments.peek().getTokenStack();
     }
 
-    public Path getWorkingDirectory(){
-        return workingDirectory;
-    }
-
-    public boolean evaluate(){
+    public boolean evaluate() {
         //try {
-            for (Statement statement : statements) {
-                statement.run(this);
-            }
+        for (Statement statement : statements) {
+            statement.run(this);
+        }
         /*}
         catch (RuntimeException e){
             System.out.println(e.getMessage());

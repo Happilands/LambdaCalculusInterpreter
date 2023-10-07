@@ -3,6 +3,7 @@
     By: Daan Phlips
 */
 
+import "booleans.lc";
 import "numbers.lc";
 
 PAIR    := λx.λy.λf.f x y;                  // Creates a pairing of two elements
