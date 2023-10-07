@@ -57,12 +57,11 @@ public class Lambda extends Function{
     public Expression takeInput(Expression expression){
         Expression evaluated = expression.evaluate();
 
-        if(variables.isEmpty())
-            return body.evaluate();
-
-        while (variables.size() > 1)
-            variables.poll().setSubstitution(evaluated.createCopy());
-        variables.poll().setSubstitution(evaluated);
+        if(!variables.isEmpty()) {
+            while (variables.size() > 1)
+                variables.poll().setSubstitution(evaluated.createCopy());
+            variables.poll().setSubstitution(evaluated);
+        }
 
         return body.evaluate();
     }

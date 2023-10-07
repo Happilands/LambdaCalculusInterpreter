@@ -3,7 +3,7 @@
     By: Daan Phlips
 */
 
-import "example_programs/booleans.lc";
+import "booleans.lc";
 
 PAIR    := λx.λy.λf.f x y;              // Creates a pairing of two elements
 FIRST   := λp.p T;                      // Retrieves the first element
@@ -15,3 +15,14 @@ PACK_5 := λa.λb.λc.λd.λe.          PAIR (PACK_4 a b c d) e;
 PACK_6 := λa.λb.λc.λd.λe.λf.       PAIR (PACK_5 a b c d e) f;
 PACK_7 := λa.λb.λc.λd.λe.λf.λg.    PAIR (PACK_6 a b c d e f) g;
 PACK_8 := λa.λb.λc.λd.λe.λf.λg.λh. PAIR (PACK_7 a b c d e f g) h;
+
+FEED_UNPACK_3 := λf.λlist.f
+(FIRST (FIRST list))
+(SECOND (FIRST list))
+(SECOND list);
+
+FEED_UNPACK_4 := λf.λlist.f
+(FIRST (FIRST (FIRST list)))
+(SECOND (FIRST (FIRST list)))
+(SECOND (FIRST list))
+(SECOND list);

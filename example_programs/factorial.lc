@@ -1,0 +1,18 @@
+/*
+    Factorial
+    By: Daan Phlips
+*/
+
+import "arithmetic.lc";
+
+// (n, r) -> (n-1, r * n)
+FACTORIAL_STEP := λp.(PAIR (PRED (FIRST p)) (MULTIPLY (FIRST p) (SECOND p)));
+FACTORIAL := λn.SECOND (n FACTORIAL_STEP (PAIR n 1));
+
+println FACTORIAL 0;
+println FACTORIAL 1;
+println FACTORIAL 2;
+println FACTORIAL 3;
+println FACTORIAL 4;
+println FACTORIAL 5;
+println FACTORIAL 6;

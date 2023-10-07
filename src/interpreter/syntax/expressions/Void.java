@@ -22,6 +22,6 @@ public class Void extends Expression{
 
     @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append("()");
+        formatter.getBuilder().append("void");
     }
 }

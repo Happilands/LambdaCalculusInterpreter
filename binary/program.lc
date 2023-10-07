@@ -3,16 +3,6 @@
     By: Daan Phlips
 */
 
-import "stack.lc";
+import "binary_numbers.lc";
 
-myStack := STACK_CREATE;
-myStack := STACK_APPEND myStack True;
-myStack := STACK_APPEND myStack 2;
-myStack := STACK_APPEND myStack FIRST;
-myStack := STACK_APPEND myStack (λx.);
-
-println STACK_SIZE myStack;
-println STACK_GET myStack 0;
-println STACK_GET myStack 1;
-println STACK_GET myStack 2;
-println STACK_GET myStack 3;
+println ADDb 7b 3b;

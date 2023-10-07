@@ -69,7 +69,7 @@ public class TokenStack {
         currentChar = 0;
         lastNewLineChar = 0;
 
-        Matcher m = Pattern.compile("//.*|(?s)/\\*.*?\\*/|([λlL.;()]|:=|[a-zA-Z0-9_]+|\"[^\"]*\")|\\s")
+        Matcher m = Pattern.compile("//.*|(?s)/\\*.*?\\*/|([λ.;()]|:=|[a-zA-Z0-9_]+|\"[^\"]*\")|\\s")
                 .matcher(code);
 
         int lastEnd = 0;

@@ -3,7 +3,7 @@
     By: Daan Phlips
 */
 
-import "example_programs/lists.lc";
+import "lists.lc";
 
 b0 := PACK_8 F F F F F F F F;
 b1 := PACK_8 F F F F F F F T;
@@ -19,11 +19,7 @@ ADD_UNPACKED := λn.λm.λc.λr.PACK_4
 (CARRY_3_BITS (SECOND n) (SECOND m) c)
 (PAIR r (ADD_3_BITS (SECOND n) (SECOND m) c));
 
-ADD_PACKED := λnmcr.ADD_UNPACKED
-((FIRST (FIRST (FIRST nmcr))))
-(SECOND (FIRST (FIRST nmcr)))
-(SECOND (FIRST nmcr))
-(SECOND nmcr);
+ADD_PACKED := λnmcr.FEED_UNPACK_4 ADD_UNPACKED nmcr;
 
 ADD_LAST := λb1b2cr.PAIR (SECOND b1b2cr) (
 ADD_3_BITS

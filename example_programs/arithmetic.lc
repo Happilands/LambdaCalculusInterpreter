@@ -3,5 +3,17 @@
     By: Daan Phlips
 */
 
+import "numbers.lc";
+import "lists.lc";
+
+IS_ZERO := λn.n (λx.F) T;
+
 PLUS    := λm.λn.λf.λx.m f (n f x);     // Addition
-MULT    := λm.λn.λf.m (n f);            // Multiplication
+MULTIPLY    := λm.λn.λf.m (n f);            // Multiplication
+
+PRED    := λn.FIRST (n                      // The predecessor function
+(λx.PAIR (SECOND x) (SUCC (SECOND x)))
+(PAIR 0 0));
+
+MAX     := λn.λm.IS_ZERO (n PRED m) n m;     // Maximum
+MIN     := λn.λm.IS_ZERO (n PRED m) m n;     // Minimum

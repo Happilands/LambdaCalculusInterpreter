@@ -14,6 +14,7 @@ PAIR    := λx.λy.λf.f x y;              // Creates a pairing of two elements
 FIRST   := λp.p T;                      // Retrieves the first element
 SECOND  := λp.p F;                      // Retrieves the second element
 
+// (n, m) -> (n + m, n)
 FIBSTEP := λp.(PAIR (PLUS (FIRST p) (SECOND p)) (FIRST p));
 FIB := λn.FIRST (n FIBSTEP (PAIR 0 1));
 

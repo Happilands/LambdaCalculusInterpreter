@@ -27,8 +27,6 @@ public enum TokenType {
         return switch (s) {
             case ":=" -> ASSIGNMENT;
             case "λ" -> LAMBDA;
-            case "l" -> LAMBDA;
-            case "L" -> LAMBDA;
             case "." -> DOT;
             case ";" -> TERMINATOR;
             case "(" -> OPEN_BRACKET;
