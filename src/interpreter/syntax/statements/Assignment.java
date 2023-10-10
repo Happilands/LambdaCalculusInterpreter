@@ -24,10 +24,6 @@ public class Assignment extends Statement{
         return identifier;
     }
 
-    public Expression getExpression(){
-        return body;
-    }
-
     public static Assignment parseAssignment(Program program) {
         Assignment assignment = new Assignment();
 

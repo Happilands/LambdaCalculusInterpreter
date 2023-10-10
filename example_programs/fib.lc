@@ -1,0 +1,32 @@
+True := λx.λy.x;
+False := λx.λy.y;
+
+Pair := λa.λb.λf.f a b;
+First := λp.p True;
+Second := λp.p False;
+
+0 := λf.λx.x;
+Succ := λn.λf.λx.f (n f x);
+
+1 := Succ 0;
+2 := Succ 1;
+3 := Succ 2;
+4 := Succ 3;
+5 := Succ 4;
+6 := Succ 5;
+
+Plus := λn.λm.λf.λx.n f (m f x);
+
+FibStep := λp.Pair (Plus (First p) (Second p)) (First p);
+
+Fibonacci := λn.First (n FibStep (Pair 1 0));
+
+println Fibonacci 0;
+println Fibonacci 1;
+println Fibonacci 2;
+println Fibonacci 3;
+println Fibonacci 4;
+println Fibonacci 5;
+println Fibonacci 6;
+
+println Fibonacci;

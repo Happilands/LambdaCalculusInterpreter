@@ -5,6 +5,6 @@
 
 import "infinitely_expanding_binary_numbers.lc";
 
-// Exponentially slow, idk why
+// Exponentially slow
 
 println ADDb 5b 3b;

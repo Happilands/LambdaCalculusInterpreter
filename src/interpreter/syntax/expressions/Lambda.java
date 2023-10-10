@@ -10,11 +10,16 @@ import interpreter.syntax.TokenType;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class Lambda extends Function{
+public class Lambda extends Expression{
     private final String varName;
     private Expression body;
     private final Queue<Variable> variables;
     private Lambda copyInProgress;
+
+    @Override
+    public ExpressionType getType() {
+        return ExpressionType.LAMBDA;
+    }
 
     public Lambda(String varName){
         this.varName = varName;
@@ -53,7 +58,6 @@ public class Lambda extends Function{
         return new Variable(parent);
     }
 
-    @Override
     public Expression takeInput(Expression expression){
         if(variables.isEmpty())
             return body.evaluate();

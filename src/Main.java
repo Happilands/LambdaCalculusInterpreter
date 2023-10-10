@@ -5,11 +5,33 @@ import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
-        Program program = new Program(Path.of("binary/"));
+        System.out.println("Starting up...");
+        for (String arg : args
+             ) {
+            run(Path.of(arg));
+        }
+    }
+
+    private static void run(Path path){
+        Path file = path.getFileName();
+        Path directory = path.getParent();
+
+        Program program = new Program(directory);
+
+        program.importFile(file);
+
+        program.evaluate();
+    }
+
+    private static void debugRun(Path path){
+        Path file = path.getFileName();
+        Path directory = path.getParent();
+
+        Program program = new Program(directory);
 
         StopWatch stopWatch = new StopWatch();
 
-        program.importFile(Path.of("program.lc"));
+        program.importFile(file);
 
         System.out.print("Parsing ");
         stopWatch.printTime();

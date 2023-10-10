@@ -1,0 +1,12 @@
+/*
+    Fibonacci
+    By: Gerald
+*/
+
+import "arithmetic.lc";
+
+FIB_FUNCTION := λfib.λn.IS_ZERO (PRED n) (1) (PLUS fib(PRED n) fib(2 PRED n));
+
+INF := λf.λy.(λx.f(λy.x x y)) (λx.f(λy.x x y)) y;
+
+println INF FIB_FUNCTION 0;

@@ -5,7 +5,7 @@
 
 import "arithmetic.lc";
 
-STACK_CREATE := PAIR 0 (λx.);
+STACK_CREATE := PAIR 0 (λx.x);
 STACK_SIZE := λstack.FIRST stack;
 STACK_IS_EMPTY := λstack.ISZERO (STACK_SIZE stack);
 
