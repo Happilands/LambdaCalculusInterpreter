@@ -14,7 +14,7 @@ public class Print extends Statement{
 
     @Override
     public void run(Program program) {
-        body = Expression.callByNameMode() ? body.simplify() : new Evaluator(body).evaluate();
+        body = Expression.callByValueMode() ? body.simplify() : new Evaluator(body).evaluate();
 
         String out = program.getDefinitionStack().formatExpression(body);
 

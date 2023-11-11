@@ -14,7 +14,7 @@ public class Assignment extends Statement{
 
     @Override
     public void run(Program program) {
-        if(Expression.callByNameMode())
+        if(Expression.callByValueMode())
             body = body.simplify();
 
         program.getDefinitionStack().assign(definition, body);

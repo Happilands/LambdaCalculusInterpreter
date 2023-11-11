@@ -7,8 +7,11 @@ import interpreter.program.Program;
 import interpreter.syntax.Token;
 
 public abstract class Expression {
-    public static boolean callByNameMode(){
-        return true;
+    /**
+     * @return true if call by value mode is on, false if call by name mode is on
+     */
+    public static boolean callByValueMode(){
+        return false;
     }
 
     /**
