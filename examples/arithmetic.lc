@@ -11,9 +11,7 @@ IS_ZERO := λn.n (λx.F) T;
 PLUS    := λm.λn.λf.λx.m f (n f x);     // Addition
 MULTIPLY    := λm.λn.λf.m (n f);            // Multiplication
 
-PRED    := λn.FIRST (n                      // The predecessor function
-(λx.PAIR (SECOND x) (SUCC (SECOND x)))
-(PAIR 0 0));
+PRED := λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u);
 
 MAX     := λn.λm.IS_ZERO (n PRED m) n m;     // Maximum
 MIN     := λn.λm.IS_ZERO (n PRED m) m n;     // Minimum

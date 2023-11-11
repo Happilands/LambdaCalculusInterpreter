@@ -5,23 +5,31 @@ import interpreter.program.ExpressionFormatter;
 import java.util.Objects;
 
 public class Variable extends Expression{
-    private Expression substitution;
     private final Lambda lambda;
 
     public Variable(Lambda lambda){
-        this.substitution = null;
         this.lambda = lambda;
 
         lambda.registerVariable(this);
     }
 
-    public void setSubstitution(Expression expression){
-        substitution = expression;
+    public Expression evaluate(){
+        Expression substitution = lambda.getSubstitution();
+
+        if(substitution == null)
+            return this;
+
+        return substitution.createCopy();
     }
 
     @Override
-    public Expression evaluate() {
-        return Objects.requireNonNullElse(substitution, this);
+    public Expression simplify() {
+        Expression substitution = lambda.getSubstitution();
+
+        if(substitution == null)
+            return this;
+
+        return substitution.createCopy().simplify();
     }
 
     @Override
@@ -36,6 +44,9 @@ public class Variable extends Expression{
 
     @Override
     public void format(ExpressionFormatter formatter) {
-        formatter.getBuilder().append(formatter.getPrime(lambda));
+        if(lambda.getSubstitution() == null)
+            formatter.getBuilder().append(formatter.getPrime(lambda));
+        else
+            lambda.getSubstitution().format(formatter);
     }
 }

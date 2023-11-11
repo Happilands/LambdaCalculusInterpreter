@@ -1,12 +1,11 @@
 package interpreter.syntax.statements;
 
 import interpreter.exception.SyntaxError;
-import interpreter.program.ExpressionFormatter;
+import interpreter.program.Evaluator;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
 import interpreter.syntax.expressions.Expression;
-import interpreter.syntax.expressions.Identifier;
 import interpreter.syntax.expressions.Sequence;
 
 public class Print extends Statement{
@@ -15,7 +14,7 @@ public class Print extends Statement{
 
     @Override
     public void run(Program program) {
-        body = body.evaluate();
+        body = Expression.callByNameMode() ? body.simplify() : new Evaluator(body).evaluate();
 
         String out = program.getDefinitionStack().formatExpression(body);
 

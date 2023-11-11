@@ -5,7 +5,6 @@ import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Starting up...");
         for (String arg : args
              ) {
             run(Path.of(arg));
@@ -18,7 +17,7 @@ public class Main {
 
         Program program = new Program(directory);
 
-        program.importFile(file);
+        program.run(file);
 
         program.evaluate();
     }
@@ -31,7 +30,7 @@ public class Main {
 
         StopWatch stopWatch = new StopWatch();
 
-        program.importFile(file);
+        program.run(file);
 
         System.out.print("Parsing ");
         stopWatch.printTime();

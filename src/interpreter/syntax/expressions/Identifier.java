@@ -1,5 +1,6 @@
 package interpreter.syntax.expressions;
 
+import interpreter.exception.LambdaError;
 import interpreter.program.Definition;
 import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
@@ -13,10 +14,13 @@ public class Identifier extends Expression{
         this.definition = definition;
     }
 
-    @Override
-    public Expression evaluate(){
-        // Definitions should already be simplified, so no need to call evaluate() on the copy
+    public Expression evaluate() {
         return definition.getExpression().createCopy();
+    }
+
+    @Override
+    public Expression simplify(){
+        return definition.getExpression().createCopy().simplify();
     }
 
     @Override
@@ -34,7 +38,7 @@ public class Identifier extends Expression{
         formatter.getBuilder().append(definition.getIdentifier());
     }
 
-    public static Expression parse(Program program){
+    public static Expression parse(Program program) throws LambdaError {
         Token identifier = program.getTokenStack().expect(TokenType.IDENTIFIER);
 
         Definition definition = program.getDefinitionStack().find(identifier);

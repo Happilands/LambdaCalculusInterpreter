@@ -1,5 +1,6 @@
 package interpreter.syntax.statements;
 
+import interpreter.exception.LambdaError;
 import interpreter.exception.SyntaxError;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
@@ -15,7 +16,7 @@ public class Import extends Statement {
 
     }
 
-    public static Statement parseImport(Program program) {
+    public static Statement parseImport(Program program) throws LambdaError {
         Import statement = new Import();
 
         Token keyword = program.getTokenStack().expect(TokenType.IDENTIFIER);

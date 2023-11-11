@@ -1,16 +1,21 @@
 package interpreter.syntax.expressions;
 
+import interpreter.exception.LambdaError;
 import interpreter.exception.SyntaxError;
 import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
 
 public abstract class Expression {
+    public static boolean callByNameMode(){
+        return true;
+    }
+
     /**
-     * Evaluates this expression to its simplest form.
+     * Simplifies this expression.
      * @return the simplest form
      */
-    public abstract Expression evaluate();
+    public abstract Expression simplify();
 
     public abstract ExpressionType getType();
 
@@ -18,7 +23,7 @@ public abstract class Expression {
 
     public abstract void format(ExpressionFormatter formatter);
 
-    public static Expression parse(Program program){
+    public static Expression parse(Program program) throws LambdaError {
 
         Token first = program.getTokenStack().peek();
 

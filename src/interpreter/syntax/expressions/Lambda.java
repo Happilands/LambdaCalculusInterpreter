@@ -1,5 +1,6 @@
 package interpreter.syntax.expressions;
 
+import interpreter.exception.LambdaError;
 import interpreter.program.Definition;
 import interpreter.program.DefinitionType;
 import interpreter.program.ExpressionFormatter;
@@ -10,15 +11,20 @@ import interpreter.syntax.TokenType;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class Lambda extends Expression{
+public class Lambda extends Sequence{
     private final String varName;
     private Expression body;
     private final Queue<Variable> variables;
     private Lambda copyInProgress;
+    private Expression substitution;
 
     @Override
     public ExpressionType getType() {
         return ExpressionType.LAMBDA;
+    }
+
+    public Expression getSubstitution(){
+        return substitution;
     }
 
     public Lambda(String varName){
@@ -31,9 +37,17 @@ public class Lambda extends Expression{
         return varName;
     }
 
+    public Expression getBody(){
+        return body;
+    }
+
+    public void setBody(Expression expression){
+        body = expression;
+    }
+
     @Override
-    public Expression evaluate() {
-        body = body.evaluate();
+    public Expression simplify() {
+        body = body.simplify();
         return this;
     }
 
@@ -58,20 +72,32 @@ public class Lambda extends Expression{
         return new Variable(parent);
     }
 
-    public Expression takeInput(Expression expression){
+    public Expression takeInputEvaluate(Expression expression){
+        /*if(!variables.isEmpty()) {
+            while (variables.size() > 1) {
+                variables.poll().setSubstitution(expression.createCopy());
+            }
+            variables.poll().setSubstitution(expression);
+        }*/
+        substitution = expression;
+
+        return body;
+    }
+
+    public Expression takeInputSimplify(Expression expression){
         if(variables.isEmpty())
-            return body.evaluate();
+            return body.simplify();
 
-        Expression evaluated = expression.evaluate();
+        substitution = expression.simplify();
 
-        if(!variables.isEmpty()) {
+        /*if(!variables.isEmpty()) {
             while (variables.size() > 1) {
                 variables.poll().setSubstitution(evaluated.createCopy());
             }
             variables.poll().setSubstitution(evaluated);
-        }
+        }*/
 
-        return body.evaluate();
+        return body.simplify();
     }
 
     @Override
@@ -85,7 +111,7 @@ public class Lambda extends Expression{
         formatter.pop(this);
     }
 
-    public static Lambda parse(Program program) {
+    public static Lambda parse(Program program) throws LambdaError {
         Token lambdaToken = program.getTokenStack().expect(TokenType.LAMBDA);
         Token varToken = program.getTokenStack().expect(TokenType.IDENTIFIER);
         Token dotToken = program.getTokenStack().expect(TokenType.DOT);

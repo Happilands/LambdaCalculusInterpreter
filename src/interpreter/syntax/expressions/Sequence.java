@@ -1,5 +1,6 @@
 package interpreter.syntax.expressions;
 
+import interpreter.exception.LambdaError;
 import interpreter.exception.SyntaxError;
 import interpreter.program.ExpressionFormatter;
 import interpreter.program.Program;
@@ -12,36 +13,44 @@ import java.util.List;
 public class Sequence extends Expression{
     private final List<Expression> expressions;
 
-    private void addExpression(Expression expression){
+    public List<Expression> getExpressions(){
+        return expressions;
+    }
+
+    public void addExpression(Expression expression){
         expressions.add(expression);
     }
 
-    private void replaceExpression(int index, Expression expression){
+    public void replaceExpression(int index, Expression expression){
         expressions.set(index, expression);
     }
 
+    public void removeExpression(int index){
+        expressions.remove(index);
+    }
+
     @Override
-    public Expression evaluate() {
+    public Expression simplify() {
         while (expressions.size() > 1) {
-            replaceExpression(0, expressions.get(0).evaluate());
+            replaceExpression(0, expressions.get(0).simplify());
 
             Expression left = expressions.get(0);
-            Expression right = expressions.get(1);
 
             if (left.getType() == ExpressionType.LAMBDA) {
-                replaceExpression(0, ((Lambda) left).takeInput(right));
+                Expression right = expressions.get(1);
+                replaceExpression(0, ((Lambda) left).takeInputSimplify(right));
                 expressions.remove(1);
                 continue;
             }
 
             // if the first expression in the sequence isn't a lambda, simplify the rest and return
             for (int i = 1; i < expressions.size(); i++) {
-                replaceExpression(i, expressions.get(i).evaluate());
+                replaceExpression(i, expressions.get(i).simplify());
             }
             return this;
         }
 
-        return expressions.get(0).evaluate();
+        return expressions.get(0).simplify();
     }
 
     @Override
@@ -74,7 +83,7 @@ public class Sequence extends Expression{
         expressions = new ArrayList<>();
     }
 
-    private static Sequence parse(Program program, List<TokenType> closeTypes){
+    private static Sequence parse(Program program, List<TokenType> closeTypes) throws LambdaError{
         Sequence sequence = new Sequence();
 
         while (!closeTypes.contains(program.getTokenStack().peek().getType())){
@@ -89,15 +98,15 @@ public class Sequence extends Expression{
         return sequence;
     }
 
-    public static Sequence parseAny(Program program){
+    public static Sequence parseAny(Program program) throws LambdaError{
         return parse(program, List.of(TokenType.TERMINATOR, TokenType.CLOSE_BRACKET));
     }
 
-    public static Sequence parseSemicolon(Program program){
+    public static Sequence parseSemicolon(Program program) throws LambdaError{
         return parse(program, List.of(TokenType.TERMINATOR));
     }
 
-    public static Sequence parseBracket(Program program){
+    public static Sequence parseBracket(Program program) throws LambdaError {
         program.getTokenStack().expect(TokenType.OPEN_BRACKET);
         Sequence sequence = parse(program, List.of(TokenType.CLOSE_BRACKET));
         program.getTokenStack().expect(TokenType.CLOSE_BRACKET);

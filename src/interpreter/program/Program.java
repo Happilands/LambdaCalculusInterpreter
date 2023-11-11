@@ -1,6 +1,7 @@
 package interpreter.program;
 
 import interpreter.TokenStack;
+import interpreter.exception.LambdaError;
 import interpreter.syntax.statements.Statement;
 
 import java.io.IOException;
@@ -32,18 +33,38 @@ public class Program {
         return workingDirectory.resolve(file);
     }
 
-    public void importFile(Path file){
+    public void run(Path file){
         Path path = workingDirectory.resolve(file);
+        imports.add(path);
+        ProgramSegment segment = new ProgramSegment(readFile(path));
+        segments.push(segment);
 
-        if(imports.contains(path))
-            return;
+        try {
+            segment.parse(this);
+        }
+        catch (LambdaError le){
+            System.out.println(le.getMessage());
+        }
+        segments.pop();
+    }
 
-        String code = null;
+    public static String readFile(Path path){
+        String code;
         try {
             code = Files.readString(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return code;
+    }
+
+    public void importFile(Path file) throws LambdaError{
+        Path path = workingDirectory.resolve(file);
+
+        if(imports.contains(path))
+            return;
+
+        String code = readFile(path);
 
         imports.add(path);
 

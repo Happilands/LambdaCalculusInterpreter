@@ -1,5 +1,6 @@
 package interpreter.syntax.statements;
 
+import interpreter.exception.LambdaError;
 import interpreter.exception.SyntaxError;
 import interpreter.program.Program;
 import interpreter.syntax.Token;
@@ -8,7 +9,7 @@ import interpreter.syntax.TokenType;
 public abstract class Statement {
     public abstract void run(Program program);
 
-    public static Statement parseStatement(Program program) {
+    public static Statement parseStatement(Program program) throws LambdaError {
         Token next = program.getTokenStack().peek();
 
         if (next.getString().equals("print") || next.getString().equals("println"))

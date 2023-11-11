@@ -5,7 +5,6 @@ import interpreter.program.DefinitionType;
 import interpreter.program.Program;
 import interpreter.syntax.TokenType;
 import interpreter.syntax.expressions.Expression;
-import interpreter.syntax.expressions.Identifier;
 import interpreter.syntax.expressions.Sequence;
 
 public class Assignment extends Statement{
@@ -15,7 +14,8 @@ public class Assignment extends Statement{
 
     @Override
     public void run(Program program) {
-        body = body.evaluate();
+        if(Expression.callByNameMode())
+            body = body.simplify();
 
         program.getDefinitionStack().assign(definition, body);
     }

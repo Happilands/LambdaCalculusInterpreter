@@ -1,6 +1,7 @@
 package interpreter.program;
 
 import interpreter.TokenStack;
+import interpreter.exception.LambdaError;
 import interpreter.syntax.statements.Statement;
 
 public class ProgramSegment {
@@ -14,15 +15,8 @@ public class ProgramSegment {
         return tokenStack;
     }
 
-    public boolean parse(Program program) {
-        try {
-            while (!tokenStack.hasEnded())
-                program.addStatement(Statement.parseStatement(program));
-        }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-        return true;
+    public void parse(Program program) throws LambdaError {
+        while (!tokenStack.hasEnded())
+            program.addStatement(Statement.parseStatement(program));
     }
 }

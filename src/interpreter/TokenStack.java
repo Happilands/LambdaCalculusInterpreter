@@ -1,6 +1,7 @@
 package interpreter;
 
 import interpreter.exception.EOFError;
+import interpreter.exception.LambdaError;
 import interpreter.exception.SyntaxError;
 import interpreter.syntax.Token;
 import interpreter.syntax.TokenType;
@@ -49,9 +50,9 @@ public class TokenStack {
         return tokens.isEmpty();
     }
 
-    public Token expect(TokenType type) {
+    public Token expect(TokenType type) throws LambdaError {
         if (hasEnded())
-            throw new RuntimeException("Expected " + type.toString().toLowerCase() + " but reached end of file");
+            throw new EOFError(type.toString().toLowerCase());
 
         Token token = tokens.poll();
 
